@@ -54,14 +54,14 @@
     });
 
     setTimeout(() => {
-      axios.post('https://universityadmissionsystembackend.onrender.com//api/auth/getToken', {
+      axios.post('https://universityadmissionsystembackend.onrender.com/api/auth/getToken', {
         key: 'key'
       }).then(respone => {
         localStorage.setItem('authToken', respone.data.token);
       });
 
 
-      axios.post('https://universityadmissionsystembackend.onrender.com//staff', {
+      axios.post('https://universityadmissionsystembackend.onrender.com/staff', {
         email: email,
         pass: password
       })
