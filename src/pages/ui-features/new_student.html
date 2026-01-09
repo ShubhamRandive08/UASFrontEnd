@@ -102,7 +102,7 @@
                 },
               });
             } else {
-              if (parseInt(document.getElementById('fee').value) >= 5000) {
+              if (parseInt(document.getElementById('fee').value) >= 5000 && parseInt(document.getElementById('fee').value) <= 20000) {
                 axios.post('https://universityadmissionsystembackend.onrender.com/insertStudent', {
                   "fname": document.getElementById('fname').value,
                   "mname": document.getElementById('mname').value,
@@ -163,7 +163,7 @@
                 Swal.fire({
                   icon: 'error',
                   title: 'Error!',
-                  text: 'Please Fill fees above 5000',
+                  text: 'Please Fill fees above 5000 And less than or equel to 20000',
                 });
               }
             }
