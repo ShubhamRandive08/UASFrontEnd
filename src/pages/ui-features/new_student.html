@@ -17,6 +17,10 @@
   <!-- endinject -->
   <link rel="shortcut icon" href="../../assets/images/favicon.ico" />
   <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+  <!-- Font Awesome 6.4.0 (Free Icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <!-- Include SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -107,7 +111,7 @@
                   "fname": document.getElementById('fname').value,
                   "mname": document.getElementById('mname').value,
                   "lname": document.getElementById('lname').value,
-                  "class1" : document.getElementById('course').value,
+                  "class1": document.getElementById('course').value,
                   "gender": document.getElementById('gender').value,
                   "dob": document.getElementById('dob').value,
                   "twelvem": document.getElementById('twelveth').value,
@@ -122,7 +126,7 @@
                   "tname": localStorage.getItem('tname'),
                   "pcode": document.getElementById('pcode').value,
                   "date": formattedDate,
-                  "status" : 'Pending'
+                  "status": 'Pending'
                 })
                   .then(responce => {
                     Swal.fire({
@@ -174,7 +178,8 @@
   </script>
 
   <style>
-    #course::placeholder, #cast::placeholder{
+    #course::placeholder,
+    #cast::placeholder {
       color: black;
     }
   </style>
@@ -447,12 +452,12 @@
                           <div class="col-sm-9">
                             <!-- <input type="number" class="form-control" id="course"
                               placeholder="Bachaler Of Computer Application" disabled/> -->
-                              <select name="" class="form-control" id="course">
-                                <option value="Select">Select Your Course</option>
-                                <option value="BCA I">BCA I</option>
-                                <option value="BCA II">BCA II</option>
-                                <option value="BCA III">BCA III</option>
-                              </select>
+                            <select name="" class="form-control" id="course">
+                              <option value="Select">Select Your Course</option>
+                              <option value="BCA I">BCA I</option>
+                              <option value="BCA II">BCA II</option>
+                              <option value="BCA III">BCA III</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -465,6 +470,986 @@
                           </div>
                         </div>
                       </div>
+                      <!-- Upload Documents Section -->
+                      <hr class="my-4">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="section-header">
+                            <h5 class="mb-1" style="color: #2c3e50;"><i class="fas fa-cloud-upload-alt"></i> Document
+                              Upload</h5>
+                            <p class="text-muted mb-3">Upload required documents (Max 2MB each) • Click to preview</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- View All Button
+                      <div class="row mb-3">
+                        <div class="col-md-12">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewAllDocuments()" id="viewAllBtn"
+                              style="display: none;">
+                              <i class="fas fa-eye me-1"></i> View All Uploaded Documents
+                            </button>
+                            <span class="badge bg-success" id="uploadCountBadge">0 uploaded</span>
+                          </div>
+                        </div>
+                      </div> -->
+
+                      <!-- Document Cards -->
+                      <div class="row g-3" id="documentContainer">
+                        <!-- Document 1: Aadhar Card -->
+                        <div class="col-md-3 col-sm-6">
+                          <div class="doc-card" data-doc="aadhar" onclick="handleCardClick('aadhar')">
+                            <div class="doc-icon-container"
+                              style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                              <i class="fas fa-id-card doc-icon"></i>
+                            </div>
+                            <div class="doc-info">
+                              <h6>Aadhar Card</h6>
+                              <div class="file-size">Required</div>
+                            </div>
+                            <input type="file" class="doc-file-input" id="aadharFile" accept=".pdf,.jpg,.jpeg,.png"
+                              onchange="handleFileUpload('aadhar', this)">
+                            <button class="upload-btn" onclick="triggerFileInput('aadharFile', event)">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="doc-badge">
+                              <i class="fas fa-check"></i>
+                            </div>
+                            <div class="file-preview" id="aadharPreview"></div>
+                          </div>
+                        </div>
+
+                        <!-- Document 2: 10th Marksheet -->
+                        <div class="col-md-3 col-sm-6">
+                          <div class="doc-card" data-doc="tenth" onclick="handleCardClick('tenth')">
+                            <div class="doc-icon-container"
+                              style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                              <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="doc-info">
+                              <h6>10th Marksheet</h6>
+                              <div class="file-size">Required</div>
+                            </div>
+                            <input type="file" class="doc-file-input" id="tenthFile" accept=".pdf,.jpg,.jpeg,.png"
+                              onchange="handleFileUpload('tenth', this)">
+                            <button class="upload-btn" onclick="triggerFileInput('tenthFile', event)">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="doc-badge">
+                              <i class="fas fa-check"></i>
+                            </div>
+                            <div class="file-preview" id="tenthPreview"></div>
+                          </div>
+                        </div>
+
+                        <!-- Document 3: 12th Marksheet -->
+                        <div class="col-md-3 col-sm-6">
+                          <div class="doc-card" data-doc="twelfth" onclick="handleCardClick('twelfth')">
+                            <div class="doc-icon-container"
+                              style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                              <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="doc-info">
+                              <h6>12th Marksheet</h6>
+                              <div class="file-size">Required</div>
+                            </div>
+                            <input type="file" class="doc-file-input" id="twelfthFile" accept=".pdf,.jpg,.jpeg,.png"
+                              onchange="handleFileUpload('twelfth', this)">
+                            <button class="upload-btn" onclick="triggerFileInput('twelfthFile', event)">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="doc-badge">
+                              <i class="fas fa-check"></i>
+                            </div>
+                            <div class="file-preview" id="twelfthPreview"></div>
+                          </div>
+                        </div>
+
+                        <!-- Document 4: Caste Certificate -->
+                        <div class="col-md-3 col-sm-6">
+                          <div class="doc-card" data-doc="caste" onclick="handleCardClick('caste')">
+                            <div class="doc-icon-container"
+                              style="background: linear-gradient(135deg, #2ecc71, #27ae60);">
+                              <i class="fas fa-certificate doc-icon"></i>
+                            </div>
+                            <div class="doc-info">
+                              <h6>Caste Certificate</h6>
+                              <div class="file-size">Required</div>
+                            </div>
+                            <input type="file" class="doc-file-input" id="casteFile" accept=".pdf,.jpg,.jpeg,.png"
+                              onchange="handleFileUpload('caste', this)">
+                            <button class="upload-btn" onclick="triggerFileInput('casteFile', event)">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="doc-badge">
+                              <i class="fas fa-check"></i>
+                            </div>
+                            <div class="file-preview" id="castePreview"></div>
+                          </div>
+                        </div>
+
+                        <!-- Document 5: Passport Photo -->
+                        <div class="col-md-3 col-sm-6">
+                          <div class="doc-card" data-doc="photo" onclick="handleCardClick('photo')">
+                            <div class="doc-icon-container"
+                              style="background: linear-gradient(135deg, #f1c40f, #f39c12);">
+                              <i class="fas fa-user-circle doc-icon"></i>
+                            </div>
+                            <div class="doc-info">
+                              <h6>Passport Photo</h6>
+                              <div class="file-size">Required</div>
+                            </div>
+                            <input type="file" class="doc-file-input" id="photoFile" accept=".jpg,.jpeg,.png"
+                              onchange="handleFileUpload('photo', this)">
+                            <button class="upload-btn" onclick="triggerFileInput('photoFile', event)">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="doc-badge">
+                              <i class="fas fa-check"></i>
+                            </div>
+                            <div class="file-preview" id="photoPreview"></div>
+                          </div>
+                        </div>
+
+                        <!-- Document 6: Signature -->
+                        <div class="col-md-3 col-sm-6">
+                          <div class="doc-card" data-doc="signature" onclick="handleCardClick('signature')">
+                            <div class="doc-icon-container"
+                              style="background: linear-gradient(135deg, #1abc9c, #16a085);">
+                              <i class="fas fa-signature doc-icon"></i>
+                            </div>
+                            <div class="doc-info">
+                              <h6>Signature</h6>
+                              <div class="file-size">Required</div>
+                            </div>
+                            <input type="file" class="doc-file-input" id="signatureFile" accept=".jpg,.jpeg,.png"
+                              onchange="handleFileUpload('signature', this)">
+                            <button class="upload-btn" onclick="triggerFileInput('signatureFile', event)">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="doc-badge">
+                              <i class="fas fa-check"></i>
+                            </div>
+                            <div class="file-preview" id="signaturePreview"></div>
+                          </div>
+                        </div>
+
+                        <!-- Document 7: Domicile Certificate -->
+                        <div class="col-md-3 col-sm-6">
+                          <div class="doc-card" data-doc="domicile" onclick="handleCardClick('domicile')">
+                            <div class="doc-icon-container"
+                              style="background: linear-gradient(135deg, #34495e, #2c3e50);">
+                              <i class="fas fa-home doc-icon"></i>
+                            </div>
+                            <div class="doc-info">
+                              <h6>Domicile Certificate</h6>
+                              <div class="file-size">Required</div>
+                            </div>
+                            <input type="file" class="doc-file-input" id="domicileFile" accept=".pdf,.jpg,.jpeg,.png"
+                              onchange="handleFileUpload('domicile', this)">
+                            <button class="upload-btn" onclick="triggerFileInput('domicileFile', event)">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="doc-badge">
+                              <i class="fas fa-check"></i>
+                            </div>
+                            <div class="file-preview" id="domicilePreview"></div>
+                          </div>
+                        </div>
+
+                        <!-- Document 8: PAN Card -->
+                        <div class="col-md-3 col-sm-6">
+                          <div class="doc-card optional" data-doc="pan" onclick="handleCardClick('pan')">
+                            <div class="doc-icon-container"
+                              style="background: linear-gradient(135deg, #95a5a6, #7f8c8d);">
+                              <i class="fas fa-credit-card doc-icon"></i>
+                            </div>
+                            <div class="doc-info">
+                              <h6>PAN Card</h6>
+                              <div class="file-size">Optional</div>
+                            </div>
+                            <input type="file" class="doc-file-input" id="panFile" accept=".pdf,.jpg,.jpeg,.png"
+                              onchange="handleFileUpload('pan', this)">
+                            <button class="upload-btn" onclick="triggerFileInput('panFile', event)">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="doc-badge">
+                              <i class="fas fa-check"></i>
+                            </div>
+                            <div class="file-preview" id="panPreview"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Progress & Status -->
+                      <div class="row mt-4">
+                        <div class="col-md-12">
+                          <div class="upload-status-card">
+                            <div class="progress mb-2" style="height: 8px;">
+                              <div class="progress-bar bg-success progress-bar-striped" id="uploadProgressBar"
+                                role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div>
+                                <span id="uploadStatus" class="status-text">
+                                  <i class="fas fa-info-circle me-1"></i> Ready to upload
+                                </span>
+                              </div>
+                              <div>
+                                <span id="uploadCount" class="upload-count">
+                                  <span class="count-number">0</span>/<span class="count-total">7</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Toast Container for Messages -->
+                      <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+                      <!-- All Documents Modal -->
+                      <div class="modal fade" id="allDocsModal">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title"><i class="fas fa-folder-open me-2"></i> All Uploaded Documents
+                              </h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="row" id="allDocsList">
+                                <!-- Documents will be listed here -->
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <small class="text-muted" id="modalStats">No documents uploaded yet</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Document Preview Modal -->
+                      <div class="modal fade" id="previewModal">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header bg-light">
+                              <h6 class="modal-title">
+                                <i class="fas fa-file-alt me-2"></i>
+                                <span id="previewDocName">Document Preview</span>
+                              </h6>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body text-center p-4" id="previewContent">
+                              <div class="preview-placeholder py-5">
+                                <i class="fas fa-file fa-4x text-muted mb-3"></i>
+                                <p class="text-muted">Select a document to preview</p>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button class="btn btn-outline-danger btn-sm" onclick="removeCurrentDocument()">
+                                <i class="fas fa-trash me-1"></i> Remove
+                              </button>
+                              <a href="#" class="btn btn-primary btn-sm" id="downloadBtn" download>
+                                <i class="fas fa-download me-1"></i> Download
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <style>
+                        /* Card Design */
+                        .doc-card {
+                          background: white;
+                          border-radius: 12px;
+                          padding: 15px;
+                          border: 2px solid #e9ecef;
+                          transition: all 0.3s ease;
+                          height: 140px;
+                          position: relative;
+                          overflow: hidden;
+                          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+                          cursor: pointer;
+                          margin-bottom: 10px;
+                        }
+
+                        .doc-card:hover {
+                          transform: translateY(-3px);
+                          border-color: #3498db;
+                          box-shadow: 0 8px 20px rgba(52, 152, 219, 0.15);
+                        }
+
+                        .doc-card.uploaded {
+                          border-color: #28a745;
+                          background: linear-gradient(135deg, #f8fff8, #ffffff);
+                        }
+
+                        .doc-card.optional {
+                          border-style: dashed;
+                          border-color: #95a5a6;
+                        }
+
+                        .doc-icon-container {
+                          width: 60px;
+                          height: 60px;
+                          border-radius: 12px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          margin: 0 auto 10px;
+                          transition: all 0.3s ease;
+                          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .doc-icon {
+                          font-size: 1.5rem;
+                          color: white;
+                        }
+
+                        .upload-btn {
+                          position: absolute;
+                          bottom: 10px;
+                          right: 10px;
+                          width: 36px;
+                          height: 36px;
+                          background: #28a745;
+                          border-radius: 50%;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          color: white;
+                          cursor: pointer;
+                          border: none;
+                          transition: all 0.2s ease;
+                          box-shadow: 0 3px 8px rgba(40, 167, 69, 0.3);
+                          z-index: 10;
+                        }
+
+                        .upload-btn:hover {
+                          background: #218838;
+                          transform: scale(1.1);
+                        }
+
+                        .doc-info h6 {
+                          margin: 0;
+                          color: #2c3e50;
+                          font-size: 0.9rem;
+                          font-weight: 600;
+                          text-align: center;
+                          white-space: nowrap;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                        }
+
+                        .file-size {
+                          font-size: 0.75rem;
+                          color: #6c757d;
+                          text-align: center;
+                          margin-top: 3px;
+                        }
+
+                        .doc-badge {
+                          position: absolute;
+                          top: 8px;
+                          right: 8px;
+                          width: 22px;
+                          height: 22px;
+                          background: #28a745;
+                          border-radius: 50%;
+                          color: white;
+                          font-size: 0.7rem;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          opacity: 0;
+                          transform: scale(0);
+                          transition: all 0.3s ease;
+                          z-index: 10;
+                        }
+
+                        .doc-card.uploaded .doc-badge {
+                          opacity: 1;
+                          transform: scale(1);
+                        }
+
+                        .doc-file-input {
+                          display: none;
+                        }
+
+                        .file-preview {
+                          position: absolute;
+                          top: 0;
+                          left: 0;
+                          width: 100%;
+                          height: 100%;
+                          background: white;
+                          border-radius: 10px;
+                          display: none;
+                          padding: 5px;
+                          z-index: 1;
+                        }
+
+                        .doc-card.uploaded .file-preview {
+                          display: block;
+                        }
+
+                        .preview-image {
+                          width: 100%;
+                          height: 100%;
+                          object-fit: cover;
+                          border-radius: 8px;
+                        }
+
+                        .preview-pdf {
+                          width: 100%;
+                          height: 100%;
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          justify-content: center;
+                          background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                          border-radius: 8px;
+                        }
+
+                        .preview-pdf i {
+                          font-size: 2rem;
+                          color: #dc3545;
+                          margin-bottom: 8px;
+                        }
+
+                        /* Upload Status */
+                        .upload-status-card {
+                          background: #f8f9fa;
+                          padding: 15px;
+                          border-radius: 10px;
+                          border: 1px solid #e9ecef;
+                        }
+
+                        .status-text {
+                          font-size: 0.9rem;
+                          color: #6c757d;
+                        }
+
+                        .status-text i {
+                          font-size: 0.8rem;
+                        }
+
+                        .upload-count {
+                          font-size: 0.9rem;
+                          font-weight: 600;
+                          color: #2c3e50;
+                        }
+
+                        .count-number {
+                          color: #28a745;
+                        }
+
+                        /* All Documents Modal */
+                        .doc-list-item {
+                          display: flex;
+                          align-items: center;
+                          padding: 10px;
+                          border-bottom: 1px solid #f0f0f0;
+                          transition: background 0.2s;
+                        }
+
+                        .doc-list-item:hover {
+                          background: #f8f9fa;
+                        }
+
+                        .doc-list-icon {
+                          width: 40px;
+                          height: 40px;
+                          border-radius: 8px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          margin-right: 15px;
+                          color: white;
+                          flex-shrink: 0;
+                        }
+
+                        .doc-list-info {
+                          flex: 1;
+                          min-width: 0;
+                        }
+
+                        .doc-list-info h6 {
+                          margin: 0;
+                          font-size: 0.95rem;
+                          color: #2c3e50;
+                        }
+
+                        .doc-list-info small {
+                          color: #6c757d;
+                          font-size: 0.85rem;
+                        }
+
+                        .doc-list-actions {
+                          display: flex;
+                          gap: 5px;
+                        }
+
+                        /* Toast Messages */
+                        .toast {
+                          background: #28a745 !important;
+                          border: none;
+                          box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+                          margin-bottom: 10px;
+                        }
+
+                        .toast.error {
+                          background: #dc3545 !important;
+                        }
+
+                        .toast.info {
+                          background: #17a2b8 !important;
+                        }
+
+                        /* Fix for page jumping */
+                        html {
+                          scroll-behavior: smooth;
+                        }
+
+                        body {
+                          overflow-x: hidden;
+                        }
+
+                        /* View All Button Animation */
+                        @keyframes pulse {
+                          0% {
+                            transform: scale(1);
+                          }
+
+                          50% {
+                            transform: scale(1.05);
+                          }
+
+                          100% {
+                            transform: scale(1);
+                          }
+                        }
+
+                        #viewAllBtn {
+                          animation: pulse 2s infinite;
+                        }
+
+                        /* Ensure images don't overflow */
+                        img {
+                          max-width: 100%;
+                          height: auto;
+                        }
+                      </style>
+
+                      <script>
+                        // Store uploaded files
+                        let uploadedFiles = {};
+                        let currentDocId = null;
+                        const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
+                        const allDocsModal = new bootstrap.Modal(document.getElementById('allDocsModal'));
+
+                        // Trigger file input
+                        function triggerFileInput(inputId, event) {
+                          if (event) {
+                            event.stopPropagation();
+                            event.preventDefault();
+                          }
+                          document.getElementById(inputId).click();
+                        }
+
+                        // Handle card click
+                        function handleCardClick(docId) {
+                          if (uploadedFiles[docId]) {
+                            // If file exists, show preview
+                            showDocumentPreview(docId);
+                          } else {
+                            // If no file, trigger upload
+                            const inputId = docId + 'File';
+                            document.getElementById(inputId).click();
+                          }
+                        }
+
+                        // Handle file upload
+                        function handleFileUpload(docId, inputElement) {
+                          const file = inputElement.files[0];
+                          if (!file) return;
+
+                          // Validate file size (2MB)
+                          if (file.size > 2 * 1024 * 1024) {
+                            showToast(`File "${file.name}" exceeds 2MB limit!`, 'error');
+                            inputElement.value = '';
+                            return;
+                          }
+
+                          // Validate file type for photo and signature
+                          if (docId === 'photo' || docId === 'signature') {
+                            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                            if (!validTypes.includes(file.type.toLowerCase())) {
+                              showToast(`Only JPG, JPEG, and PNG files are allowed for ${docId === 'photo' ? 'Passport Photo' : 'Signature'}`, 'error');
+                              inputElement.value = '';
+                              return;
+                            }
+                          }
+
+                          // Store file info
+                          uploadedFiles[docId] = {
+                            file: file,
+                            name: file.name,
+                            size: (file.size / 1024).toFixed(1) + ' KB',
+                            type: file.type,
+                            url: URL.createObjectURL(file),
+                            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                          };
+
+                          // Update UI
+                          updateDocumentCard(docId);
+                          updateProgress();
+                          updateViewAllButton();
+
+                          // Show success message
+                          showToast(`✅ ${getDocName(docId)} uploaded successfully!`, 'success');
+
+                          // Auto-show preview
+                          setTimeout(() => showDocumentPreview(docId), 300);
+                        }
+
+                        // Update document card
+                        function updateDocumentCard(docId) {
+                          const card = document.querySelector(`[data-doc="${docId}"]`);
+                          const file = uploadedFiles[docId];
+                          const fileSizeEl = card.querySelector('.file-size');
+                          const previewDiv = card.querySelector('.file-preview');
+
+                          if (!file) return;
+
+                          // Add uploaded class
+                          card.classList.add('uploaded');
+
+                          // Update file size display
+                          fileSizeEl.textContent = file.size;
+                          fileSizeEl.style.color = '#28a745';
+                          fileSizeEl.style.fontWeight = '600';
+
+                          // Create preview in card
+                          if (file.type.startsWith('image/')) {
+                            previewDiv.innerHTML = `
+      <img src="${file.url}" class="preview-image" alt="${file.name}">
+      <div style="position: absolute; bottom: 5px; left: 5px; right: 5px; background: rgba(0,0,0,0.7); 
+            color: white; padding: 2px 5px; border-radius: 4px; font-size: 0.7rem; text-align: center;">
+        ${truncateText(file.name, 20)}
+      </div>
+    `;
+                          } else if (file.type === 'application/pdf') {
+                            previewDiv.innerHTML = `
+      <div class="preview-pdf">
+        <i class="fas fa-file-pdf"></i>
+        <div style="color: #333; font-size: 0.7rem; font-weight: 600;">PDF</div>
+      </div>
+    `;
+                          }
+                        }
+
+                        // Show document preview
+                        function showDocumentPreview(docId) {
+                          const file = uploadedFiles[docId];
+                          if (!file) {
+                            showToast(`Please upload ${getDocName(docId)} first`, 'info');
+                            return;
+                          }
+
+                          currentDocId = docId;
+
+                          // Update modal title
+                          const docName = getDocName(docId);
+                          document.getElementById('previewDocName').textContent = docName;
+
+                          // Update preview content
+                          const previewContent = document.getElementById('previewContent');
+
+                          if (file.type.startsWith('image/')) {
+                            previewContent.innerHTML = `
+      <img src="${file.url}" class="img-fluid rounded shadow" style="max-height: 400px;" alt="${file.name}">
+      <div class="mt-3">
+        <p class="mb-1"><strong>${file.name}</strong></p>
+        <div class="text-muted small">
+          <i class="fas fa-file me-1"></i> ${file.size} • 
+          <i class="fas fa-clock me-1"></i> ${file.timestamp}
+        </div>
+      </div>
+    `;
+                          } else if (file.type === 'application/pdf') {
+                            previewContent.innerHTML = `
+      <div class="alert alert-light border">
+        <div class="text-center py-4">
+          <i class="fas fa-file-pdf fa-4x text-danger mb-3"></i>
+          <h6>PDF Document</h6>
+          <p class="mb-2"><strong>${file.name}</strong></p>
+          <div class="text-muted small mb-3">
+            ${file.size} • Uploaded at ${file.timestamp}
+          </div>
+          <a href="${file.url}" target="_blank" class="btn btn-outline-danger">
+            <i class="fas fa-external-link-alt me-1"></i> Open in New Tab
+          </a>
+        </div>
+      </div>
+    `;
+                          } else {
+                            previewContent.innerHTML = `
+      <div class="alert alert-info">
+        <i class="fas fa-file fa-4x mb-3"></i>
+        <h6>${file.name}</h6>
+        <p class="mb-2">${file.size}</p>
+        <div class="text-muted small mb-3">
+          Uploaded at ${file.timestamp}
+        </div>
+      </div>
+    `;
+                          }
+
+                          // Update download link
+                          const downloadBtn = document.getElementById('downloadBtn');
+                          downloadBtn.href = file.url;
+                          downloadBtn.download = file.name;
+
+                          // Show modal
+                          previewModal.show();
+                        }
+
+                        // Remove current document
+                        function removeCurrentDocument() {
+                          if (!currentDocId || !uploadedFiles[currentDocId]) return;
+
+                          if (confirm(`Are you sure you want to remove ${getDocName(currentDocId)}?`)) {
+                            const card = document.querySelector(`[data-doc="${currentDocId}"]`);
+                            const fileSizeEl = card.querySelector('.file-size');
+                            const previewDiv = card.querySelector('.file-preview');
+                            const docName = getDocName(currentDocId);
+
+                            // Remove file
+                            URL.revokeObjectURL(uploadedFiles[currentDocId].url);
+                            delete uploadedFiles[currentDocId];
+
+                            // Reset card
+                            card.classList.remove('uploaded');
+                            previewDiv.innerHTML = '';
+                            fileSizeEl.textContent = card.classList.contains('optional') ? 'Optional' : 'Required';
+                            fileSizeEl.style.color = '#6c757d';
+                            fileSizeEl.style.fontWeight = 'normal';
+
+                            // Update progress
+                            updateProgress();
+                            updateViewAllButton();
+
+                            // Close modal
+                            previewModal.hide();
+
+                            // Show message
+                            showToast(`🗑️ ${docName} removed successfully`, 'info');
+                          }
+                        }
+
+                        // View all uploaded documents
+                        function viewAllDocuments() {
+                          const allDocsList = document.getElementById('allDocsList');
+                          const modalStats = document.getElementById('modalStats');
+
+                          const uploadCount = Object.keys(uploadedFiles).length;
+
+                          if (uploadCount === 0) {
+                            allDocsList.innerHTML = `
+      <div class="col-12 text-center py-5">
+        <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+        <p class="text-muted">No documents uploaded yet</p>
+        <button class="btn btn-primary btn-sm mt-2" onclick="allDocsModal.hide()">
+          <i class="fas fa-upload me-1"></i> Upload Documents
+        </button>
+      </div>
+    `;
+                            modalStats.textContent = 'No documents uploaded yet';
+                          } else {
+                            let html = '';
+                            Object.keys(uploadedFiles).forEach(docId => {
+                              const file = uploadedFiles[docId];
+                              const docName = getDocName(docId);
+                              const iconColor = getIconColor(docId);
+
+                              html += `
+        <div class="col-12">
+          <div class="doc-list-item">
+            <div class="doc-list-icon" style="background: ${iconColor};">
+              <i class="fas ${getDocIcon(docId)}"></i>
+            </div>
+            <div class="doc-list-info">
+              <h6>${docName}</h6>
+              <small>${file.name} • ${file.size} • ${file.timestamp}</small>
+            </div>
+            <div class="doc-list-actions">
+              <button class="btn btn-sm btn-outline-primary" onclick="showDocumentPreview('${docId}')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="downloadDocument('${docId}')">
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+                            });
+
+                            allDocsList.innerHTML = html;
+                            modalStats.textContent = `${uploadCount} document${uploadCount !== 1 ? 's' : ''} uploaded`;
+                          }
+
+                          allDocsModal.show();
+                        }
+
+                        // Download document
+                        function downloadDocument(docId) {
+                          const file = uploadedFiles[docId];
+                          if (!file) return;
+
+                          const link = document.createElement('a');
+                          link.href = file.url;
+                          link.download = file.name;
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+
+                          showToast(`📥 ${getDocName(docId)} downloaded`, 'success');
+                        }
+
+                        // Update progress bar
+                        function updateProgress() {
+                          const totalRequired = document.querySelectorAll('.doc-card:not(.optional)').length;
+                          const uploadedRequired = Object.keys(uploadedFiles).filter(id =>
+                            !document.querySelector(`[data-doc="${id}"]`).classList.contains('optional')
+                          ).length;
+
+                          // Update progress bar
+                          const progress = Math.round((uploadedRequired / totalRequired) * 100);
+                          const progressBar = document.getElementById('uploadProgressBar');
+                          progressBar.style.width = `${progress}%`;
+
+                          // Update counters
+                          document.querySelector('.count-number').textContent = uploadedRequired;
+                          document.querySelector('.count-total').textContent = totalRequired;
+                          document.getElementById('uploadCountBadge').textContent = `${uploadedRequired} uploaded`;
+
+                          // Update status text
+                          const statusEl = document.getElementById('uploadStatus');
+                          if (uploadedRequired === 0) {
+                            statusEl.innerHTML = '<i class="fas fa-info-circle me-1"></i> Ready to upload';
+                            statusEl.style.color = '#6c757d';
+                          } else if (uploadedRequired < totalRequired) {
+                            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin me-1"></i> ${uploadedRequired} of ${totalRequired} uploaded`;
+                            statusEl.style.color = '#f39c12';
+                          } else {
+                            statusEl.innerHTML = '<i class="fas fa-check-circle me-1"></i> All documents uploaded!';
+                            statusEl.style.color = '#28a745';
+                          }
+                        }
+
+                        // Update view all button
+                        function updateViewAllButton() {
+                          const viewAllBtn = document.getElementById('viewAllBtn');
+                          const uploadCount = Object.keys(uploadedFiles).length;
+
+                          if (uploadCount > 0) {
+                            viewAllBtn.style.display = 'inline-flex';
+                            viewAllBtn.innerHTML = `<i class="fas fa-eye me-1" disable></i> View All (${uploadCount})`;
+                          } else {
+                            viewAllBtn.style.display = 'none';
+                          }
+                        }
+
+                        // Show toast message
+                        function showToast(message, type = 'success') {
+                          const toastContainer = document.getElementById('toastContainer');
+
+                          const toast = document.createElement('div');
+                          toast.className = `toast align-items-center text-white border-0`;
+                          if (type === 'error') toast.classList.add('error');
+                          else if (type === 'info') toast.classList.add('info');
+
+                          toast.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body">
+        <i class="fas fa-${type === 'success' ? 'check-circle' :
+                              type === 'error' ? 'exclamation-triangle' :
+                                'info-circle'} me-2"></i>
+        ${message}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" 
+              onclick="this.closest('.toast').remove()"></button>
+    </div>
+  `;
+
+                          toastContainer.appendChild(toast);
+
+                          // Auto remove after 4 seconds
+                          setTimeout(() => {
+                            if (toast.parentNode) {
+                              toast.remove();
+                            }
+                          }, 4000);
+                        }
+
+                        // Helper functions
+                        function truncateText(text, maxLength) {
+                          return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+                        }
+
+                        function getDocName(docId) {
+                          const names = {
+                            aadhar: 'Aadhar Card',
+                            tenth: '10th Marksheet',
+                            twelfth: '12th Marksheet',
+                            caste: 'Caste Certificate',
+                            photo: 'Passport Photo',
+                            signature: 'Signature',
+                            domicile: 'Domicile Certificate',
+                            pan: 'PAN Card'
+                          };
+                          return names[docId] || docId;
+                        }
+
+                        function getDocIcon(docId) {
+                          const icons = {
+                            aadhar: 'fa-id-card',
+                            tenth: 'fa-file-certificate',
+                            twelfth: 'fa-file-certificate',
+                            caste: 'fa-certificate',
+                            photo: 'fa-user-circle',
+                            signature: 'fa-signature',
+                            domicile: 'fa-home',
+                            pan: 'fa-credit-card'
+                          };
+                          return icons[docId] || 'fa-file';
+                        }
+
+                        function getIconColor(docId) {
+                          const colors = {
+                            aadhar: 'linear-gradient(135deg, #3498db, #2980b9)',
+                            tenth: 'linear-gradient(135deg, #9b59b6, #8e44ad)',
+                            twelfth: 'linear-gradient(135deg, #e74c3c, #c0392b)',
+                            caste: 'linear-gradient(135deg, #2ecc71, #27ae60)',
+                            photo: 'linear-gradient(135deg, #f1c40f, #f39c12)',
+                            signature: 'linear-gradient(135deg, #1abc9c, #16a085)',
+                            domicile: 'linear-gradient(135deg, #34495e, #2c3e50)',
+                            pan: 'linear-gradient(135deg, #95a5a6, #7f8c8d)'
+                          };
+                          return colors[docId] || '#6c757d';
+                        }
+
+                        // Initialize
+                        document.addEventListener('DOMContentLoaded', function () {
+                          // Initialize progress
+                          updateProgress();
+                          updateViewAllButton();
+                        });
+                      </script>
                     </div>
                 </div>
                 <div class="row">
@@ -476,6 +1461,7 @@
                     </div>
                   </div>
                 </div>
+
                 </form>
               </div>
             </div>
