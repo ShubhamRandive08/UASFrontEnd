@@ -2,13 +2,15 @@
 <html lang="en">
 
 <head>
-  <!--  Required meta tags -->
+  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Login Page</title>
+  <title>Teacher Portal - Login</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="../assets/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="src/assets/vendors/css/vendor.bundle.base.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -19,11 +21,456 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #1a237e 0%, #283593 25%, #3949ab 50%, #5c6bc0 75%, #7986cb 100%);
+    }
+
+    .login-container {
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Left Panel - Login Form */
+    .login-left {
+      width: 45%;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+      position: relative;
+    }
+
+    .login-left::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.7));
+      pointer-events: none;
+    }
+
+    /* Right Panel - Teacher Info */
+    .login-right {
+      width: 55%;
+      background: linear-gradient(rgba(26, 35, 126, 0.85), rgba(57, 73, 171, 0.9)), 
+                  url('https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+      padding: 60px 40px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Teacher Icon Animation */
+    .teacher-icon-main {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 300px;
+      color: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+    }
+
+    /* Floating Icons */
+    .floating-icon {
+      position: absolute;
+      font-size: 40px;
+      color: rgba(255, 255, 255, 0.15);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .icon1 { top: 15%; left: 15%; animation-delay: 0s; }
+    .icon2 { top: 20%; right: 20%; animation-delay: 1s; }
+    .icon3 { bottom: 25%; left: 20%; animation-delay: 2s; }
+    .icon4 { bottom: 15%; right: 15%; animation-delay: 3s; }
+    .icon5 { top: 40%; right: 30%; animation-delay: 4s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+    }
+
+    /* Logo Section */
+    .logo-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo-icon {
+      font-size: 48px;
+      color: #3949ab;
+      margin-bottom: 15px;
+      display: inline-block;
+      background: linear-gradient(135deg, #3949ab, #5c6bc0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a237e;
+      letter-spacing: 1px;
+    }
+
+    /* Welcome Text */
+    .welcome-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .welcome-main {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1a237e;
+      margin-bottom: 10px;
+      background: linear-gradient(to right, #1a237e, #3949ab);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-sub {
+      font-size: 16px;
+      color: #666;
+      font-weight: 400;
+    }
+
+    /* Login Form */
+    .login-form {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(26, 35, 126, 0.15);
+      border: 1px solid rgba(57, 73, 171, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #3949ab;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 15px 15px 15px 45px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: #f8f9ff;
+    }
+
+    .form-control:focus {
+      border-color: #3949ab;
+      box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.2);
+      outline: none;
+      background-color: white;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 42px;
+      color: #3949ab;
+      font-size: 18px;
+    }
+
+    /* Login Button */
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #3949ab, #5c6bc0);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(135deg, #303f9f, #3949ab);
+      transform: translateY(-2px);
+      box-shadow: 0 7px 15px rgba(57, 73, 171, 0.4);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Links Section */
+    .links-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .forgot-link {
+      color: #3949ab;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .forgot-link:hover {
+      color: #1a237e;
+      text-decoration: underline;
+    }
+
+    /* Other Login Options */
+    .other-logins {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .other-logins p {
+      color: #666;
+      margin-bottom: 15px;
+      font-size: 14px;
+      position: relative;
+    }
+
+    .other-logins p::before,
+    .other-logins p::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background: #eee;
+    }
+
+    .other-logins p::before {
+      left: 0;
+    }
+
+    .other-logins p::after {
+      right: 0;
+    }
+
+    .login-options {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .option-btn {
+      padding: 12px 25px;
+      border: 2px solid #3949ab;
+      border-radius: 8px;
+      background: white;
+      color: #3949ab;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .option-btn:hover {
+      background: #3949ab;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Right Panel Content */
+    .right-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+    }
+
+    .right-title {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .right-subtitle {
+      font-size: 20px;
+      margin-bottom: 40px;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #ffd54f;
+    }
+
+    .feature-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      opacity: 0.8;
+      line-height: 1.5;
+    }
+
+    /* Stats Section */
+    .stats-section {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffd54f;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-top: 5px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .login-container {
+        flex-direction: column;
+      }
+      
+      .login-left, .login-right {
+        width: 100%;
+        padding: 40px 20px;
+      }
+      
+      .teacher-icon-main {
+        font-size: 200px;
+      }
+      
+      .right-title {
+        font-size: 36px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-section {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .login-options {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .option-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Additional Styles for Existing Elements */
+    .neon-loader {
+      width: 50px;
+      height: 50px;
+      border: 5px solid transparent;
+      border-top: 5px solid #3949ab;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Custom Checkbox */
+    input[type="checkbox"] {
+      accent-color: #3949ab;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <script>
-
   function signIn() {
     let email = document.getElementById('Email').value;
     let password = document.getElementById('Pass').value;
@@ -79,8 +526,9 @@
                 welcomeDiv.id = "userWelcomeScreen";
                 welcomeDiv.innerHTML = `
                 <div class="welcome-content">
-                  <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#fff" d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 1.3c-3 0-9 1.5-9 4.5v2.2h18v-2.2c0-3-6-4.5-9-4.5z"/></svg>
+                  <i class="fas fa-chalkboard-teacher" style="font-size: 90px; color: #ffd54f; margin-bottom: 20px;"></i>
                   <h1 class="welcome-text">WELCOME<br>${userName.toUpperCase()}</h1>
+                  <p style="color: rgba(255,255,255,0.8); margin-top: 20px; font-size: 18px;">Redirecting to Teacher Dashboard...</p>
                 </div>
               `;
                 document.body.appendChild(welcomeDiv);
@@ -91,7 +539,7 @@
                 #userWelcomeScreen {
                   position: fixed;
                   top: 0; left: 0; right: 0; bottom: 0;
-                  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+                  background: linear-gradient(135deg, #1a237e, #3949ab, #5c6bc0);
                   display: flex;
                   justify-content: center;
                   align-items: center;
@@ -102,22 +550,15 @@
                   display: flex;
                   flex-direction: column;
                   align-items: center;
-                  animation: fadeDrop 2.5s ease forwards;
+                  animation: fadeDrop .5s ease forwards;
                   opacity: 0;
-                }
-
-                .user-icon {
-                  width: 90px;
-                  height: 90px;
-                  margin-bottom: 20px;
-                  animation: iconRise 1.2s ease-out forwards;
-                  filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+                  text-align: center;
                 }
 
                 .welcome-text {
                   font-size: 3.2rem;
                   font-family: 'Segoe UI', sans-serif;
-                  background: linear-gradient(90deg, #00dbde, #fc00ff);
+                  background: linear-gradient(90deg, #ffd54f, #fff);
                   -webkit-background-clip: text;
                   -webkit-text-fill-color: transparent;
                   text-align: center;
@@ -135,17 +576,6 @@
                     opacity: 1;
                   }
                 }
-
-                @keyframes iconRise {
-                  0% {
-                    transform: scale(0.7);
-                    opacity: 0;
-                  }
-                  100% {
-                    transform: scale(1);
-                    opacity: 1;
-                  }
-                }
               `;
                 document.head.appendChild(style);
 
@@ -159,6 +589,8 @@
                   icon: 'error',
                   title: 'Error!',
                   text: 'Your Profile Has Been Locked. Please Contact with ADMIN.',
+                  background: 'rgba(26, 35, 126, 0.95)',
+                  color: '#fff'
                 });
               }
             } else {
@@ -169,7 +601,7 @@
                 showClass: {
                   popup: 'animate__animated animate__headShake'
                 },
-                background: 'rgba(0, 0, 0)',
+                background: 'rgba(26, 35, 126, 0.95)',
                 color: '#fff'
               });
             }
@@ -182,7 +614,7 @@
               showClass: {
                 popup: 'animate__animated animate__shakeX'
               },
-              background: 'rgba(0, 0, 0)',
+              background: 'rgba(26, 35, 126, 0.95)',
               color: '#fff'
             });
             console.error(error);
@@ -198,66 +630,159 @@
     }
   }
 
-  function getToken() {
-
+  // Set focus on email field when page loads
+  window.onload = function() {
+    document.getElementById('Email').focus();
+    setCount();
   }
 
+  // Allow form submission with Enter key
+  document.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      signIn();
+    }
+  });
 </script>
 
 <body>
-  <div class="container-scroller">
-    <div class="container-fluid page-body-wrapper full-page-wrapper">
-      <div class="content-wrapper d-flex align-items-center auth px-0">
-        <div class="row w-100 mx-0">
-          <div class="col-lg-4 mx-auto">
-            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-              <h4 id="heading">Hello TEACHERS ! let's get started</h4>
-              <h6 class="font-weight-light">Sign in to continue.</h6>
-              <form class="pt-3">
-                <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" id="Email" placeholder="Username" required>
-                </div>
-                <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="Pass" placeholder="Password" required>
-                </div>
-                <div class="mt-3 d-grid gap-2">
-                  <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" onclick="signIn()"
-                    type="button" value="SIGN IN">
-                </div>
-                <div class="my-2 d-flex justify-content-between align-items-center">
-                  <a href="#" class="auth-link text-black" id="forgat-pass">Forgot password?</a>
-                </div>
-                <div class="text-center mt-4 font-weight-light" id="dont-ac">Don't have an account?<a
-                    href="src/pages/samples/register.html" id="create-user" class="text-primary">Create</a>
-                </div>
-                <div class="text-center mt-4 font-weight-light" id="admin-login">Admin Login<a
-                    href="src/pages/samples/admin_login.html" id="ad-login" class="text-primary">Login</a>
-                </div>
-                <div class="text-center mt-4 font-weight-light" id="admin-login">Student Login<a
-                    href="src/pages/samples/student_login.html" id="ad-login" class="text-primary">Login</a>
-                </div>
-              </form>
-            </div>
+  <div class="login-container">
+    <!-- Left Panel - Login Form -->
+    <div class="login-left">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+        <div class="logo-text">TEACHER PORTAL</div>
+      </div>
+
+      <div class="welcome-section">
+        <h1 class="welcome-main">Welcome Back, Educator!</h1>
+        <p class="welcome-sub">Sign in to access your teaching dashboard</p>
+      </div>
+
+      <div class="login-form">
+        <div class="form-group">
+          <label for="Email"><i class="fas fa-envelope"></i> University Email</label>
+          <div class="input-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <input type="email" class="form-control" id="Email" placeholder="Enter your university email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="Pass"><i class="fas fa-key"></i> Password</label>
+          <div class="input-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <input type="password" class="form-control" id="Pass" placeholder="Enter your password" required>
+        </div>
+
+        <div class="links-section">
+          <div class="remember-me">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember me</label>
+          </div>
+          <a href="#" class="forgot-link">Forgot Password?</a>
+        </div>
+
+        <button class="login-btn" onclick="signIn()">
+          <i class="fas fa-sign-in-alt"></i>
+          SIGN IN TO PORTAL
+        </button>
+
+        <div class="other-logins">
+          <p>Or access other portals</p>
+          <div class="login-options">
+            <a href="src/pages/samples/student_login.html" class="option-btn">
+              <i class="fas fa-user-graduate"></i>
+              Student Login
+            </a>
+            <a href="src/pages/samples/admin_login.html" class="option-btn">
+              <i class="fas fa-user-shield"></i>
+              Admin Login
+            </a>
+            <a href="src/pages/samples/register.html" class="option-btn">
+              <i class="fas fa-user-plus"></i>
+              Create Account
+            </a>
           </div>
         </div>
       </div>
-      <!-- content-wrapper ends -->
     </div>
-    <!-- page-body-wrapper ends -->
+
+    <!-- Right Panel - Teacher Information -->
+    <div class="login-right">
+      <!-- Floating Icons -->
+      <i class="fas fa-chalkboard-teacher teacher-icon-main"></i>
+      <i class="fas fa-book floating-icon icon1"></i>
+      <i class="fas fa-graduation-cap floating-icon icon2"></i>
+      <i class="fas fa-chalkboard floating-icon icon3"></i>
+      <i class="fas fa-award floating-icon icon4"></i>
+      <i class="fas fa-lightbulb floating-icon icon5"></i>
+
+      <div class="right-content">
+        <h1 class="right-title">Empowering Educators, Shaping Futures</h1>
+        <p class="right-subtitle">Access your courses, manage classes, track student progress, and collaborate with colleagues. Your dedicated teaching platform awaits.</p>
+        
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-book-open"></i>
+            </div>
+            <h3 class="feature-title">Course Materials</h3>
+            <p class="feature-desc">Access and upload all teaching resources, presentations, and study materials</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="feature-title">Grades & Analytics</h3>
+            <p class="feature-desc">Track student performance with detailed analytics and grading tools</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h3 class="feature-title">Class Schedule</h3>
+            <p class="feature-desc">Manage your timetable, set reminders, and organize your teaching schedule</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <h3 class="feature-title">Communication Hub</h3>
+            <p class="feature-desc">Connect with students and colleagues through announcements and discussions</p>
+          </div>
+        </div>
+        
+        <div class="stats-section">
+          <div class="stat-item">
+            <span class="stat-number">2.5K+</span>
+            <span class="stat-label">Active Teachers</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">98%</span>
+            <span class="stat-label">Satisfaction Rate</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Support Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- container-scroller -->
-  <!-- plugins:js -->
+
+  <!-- JavaScript Libraries -->
   <script src="src/assets/vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page-->
-  <!-- End plugin js for this page-->
-  <!-- inject:js -->
   <script src="src/assets/js/off-canvas.js"></script>
   <script src="src/assets/js/hoverable-collapse.js"></script>
   <script src="src/assets/js/template.js"></script>
   <script src="src/assets/js/settings.js"></script>
   <script src="src/assets/js/todolist.js"></script>
-  <!-- endinject -->
 </body>
 
 </html>
