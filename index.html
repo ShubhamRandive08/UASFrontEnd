@@ -641,7 +641,7 @@
           pass: password
         })
           .then(response => {
-            if (response.data.status == '200') {
+            if (response.data.status == '400') {
               const userName = response.data.data[0].tname;
               localStorage.setItem('tname', userName);
               localStorage.setItem('tid', response.data.data[0].sid);
